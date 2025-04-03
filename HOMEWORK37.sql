@@ -35,4 +35,4 @@ SELECT DISTINCT color FROM vegetables_and_fruits;
 
 SELECT * FROM vegetables_and_fruits WHERE type = 'fruit' AND color = 'вказаний_колір';  
 
-SELECT * FROM vegetables_and_fruits WHERE type = 'vegetable' AND color = 'вказаний_колір';  
+SELECT * FROM vegetables_and_fruits WHERE type = 'vegetable' AND color = 'вказаний_колір';
