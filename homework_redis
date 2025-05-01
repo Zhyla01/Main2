@@ -1,0 +1,108 @@
+127.0.0.1:6379> SET username "Andrii"
+OK
+127.0.0.1:6379> DEL todo_list
+(integer) 1
+127.0.0.1:6379> RPUSH todo_list "Поготувати обід" "Вивчити Redis"
+(integer) 2
+127.0.0.1:6379> LRANGE todo_list 0 -1
+1) "\xd0\x9f\xd0\xbe\xd0\xb3\xd0\xbe\xd1\x82\xd1\x83\xd0\xb2\xd0\xb0\xd1\x82\xd0\xb8 \xd0\xbe\xd0\xb1\xd1\x96\xd0\xb4"
+2) "\xd0\x92\xd0\xb8\xd0\xb2\xd1\x87\xd0\xb8\xd1\x82\xd0\xb8 Redis"
+127.0.0.1:6379> HSET user_data age 30 country Ukraine
+(integer) 2
+127.0.0.1:6379> HGETALL user_data
+1) "age"
+2) "30"
+3) "country"
+4) "Ukraine"
+127.0.0.1:6379> SADD tags "programming" "redis" "tutorial"
+(integer) 3
+127.0.0.1:6379> SMEMBERS tags
+1) "programming"
+2) "redis"
+3) "tutorial"
+127.0.0.1:6379> DEL page_views
+(integer) 0
+127.0.0.1:6379> INCRBY page_views 5
+(integer) 5
+127.0.0.1:6379> GET page_views
+"5"
+127.0.0.1:6379> SET session_token "abc123"
+OK
+127.0.0.1:6379> EXPIRE session_token 120
+(integer) 1
+127.0.0.1:6379> DEL username
+(integer) 1
+127.0.0.1:6379> GET username
+(nil)
+127.0.0.1:6379> SET user:1:name "John"
+OK
+127.0.0.1:6379> KEYS user:*
+1) "user:1:name"
+127.0.0.1:6379> SETBIT online_status 0 1
+(integer) 0
+127.0.0.1:6379> GETBIT online_status 0
+(integer) 1
+127.0.0.1:6379> MULTI
+OK
+127.0.0.1:6379(TX)> GET balance
+QUEUED
+127.0.0.1:6379(TX)> SET balance 1000
+QUEUED
+127.0.0.1:6379(TX)> EXEC
+1) (nil)
+2) OK
+127.0.0.1:6379> SET cache:popular_articles "1,2,3"
+OK
+127.0.0.1:6379> SADD set1 "a" "b" "c"
+(integer) 3
+127.0.0.1:6379> SADD set2 "b" "c" "d"
+(integer) 3
+127.0.0.1:6379> SUNION set1 set2
+1) "a"
+2) "b"
+3) "c"
+4) "d"
+127.0.0.1:6379> SINTER set1 set2
+1) "b"
+2) "c"
+127.0.0.1:6379> SADD union_set "$(redis-cli SUNION set1 set2)"
+(integer) 1
+127.0.0.1:6379> SADD intersection_set "$(redis-cli SINTER set1 set2)"
+(integer) 1
+127.0.0.1:6379> SUBSCRIBE messages
+1) "subscribe"
+2) "messages"
+3) (integer) 1
+127.0.0.1:6379(subscribed mode)> GEOADD locations 30.5234 50.4343 "Kyiv"
+(error) ERR Can't execute 'geoadd': only (P|S)SUBSCRIBE / (P|S)UNSUBSCRIBE / PING / QUIT / RESET are allowed in this context
+127.0.0.1:6379> GEOADD locations 30.5234 50.4343 "Kyiv"
+(integer) 1
+127.0.0.1:6379> GEOADD locations 36.2304 49.1941 "Lviv"
+(integer) 1
+127.0.0.1:6379> GEORADIUS locations 30 50 400 km
+1) "Kyiv"
+127.0.0.1:6379> RPUSH tasks "Task 1" "Task 2" "Task 3"
+(integer) 3
+127.0.0.1:6379> LRANGE tasks 0 -1
+1) "Task 1"
+2) "Task 2"
+3) "Task 3"
+127.0.0.1:6379> RPUSH tasks "Task 4"
+(integer) 4
+127.0.0.1:6379> LPOP tasks
+"Task 1"
+127.0.0.1:6379> LRANGE tasks 0 -1
+1) "Task 2"
+2) "Task 3"
+3) "Task 4"
+127.0.0.1:6379> PFADD unique_users 1 2 3 4
+(integer) 1
+127.0.0.1:6379> PFCOUNT unique_users
+(integer) 4
+127.0.0.1:6379> APPEND message_queue "Hello!"
+(integer) 6
+127.0.0.1:6379> APPEND message_queue "World!"
+(integer) 12
+127.0.0.1:6379> GET message_queue
+"Hello!World!"
+127.0.0.1:6379>
